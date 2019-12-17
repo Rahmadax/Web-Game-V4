@@ -1,0 +1,5 @@
+package gamePlay
+
+func generateMap(){
+
+}

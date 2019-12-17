@@ -5,6 +5,7 @@ import (
 	"github.com/gorilla/websocket"
 	"log"
 	"net/http"
+	"/pkg"
 )
 
 var upgrader = websocket.Upgrader{
@@ -52,8 +53,10 @@ func setupRoutes(){
 
 
 
-func main(){
-	fmt.Println("Starting Server")
-	setupRoutes()
-	log.Fatal(http.ListenAndServe(":8080", nil))
+func main() {
+	Player
 }
+//	fmt.Println("Starting Server")
+//	setupRoutes()
+//	log.Fatal(http.ListenAndServe(":8080", nil))
+//}
