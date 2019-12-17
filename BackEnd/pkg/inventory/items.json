@@ -1,0 +1,14 @@
+{
+  "0": {
+    "name": "Small Health Potion",
+    "type": "potion",
+    "effect": "heal",
+    "target": "self",
+    "count": 5,
+    "value": 10
+  },
+  "1": {
+
+  }
+}
+
