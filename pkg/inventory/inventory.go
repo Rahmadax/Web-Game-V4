@@ -75,21 +75,29 @@ func GetItems(itemIds []string) ([]Item, error) {
 	return outputArray, nil
 }
 
-func (inventory *Inventory) AddItem(itemId string, amount int) {
+func (inventory *Inventory) AddItem(itemId string, amount int) bool {
 
-	idList := inventory.getInventoryItemIds()
-
-	for i := range idList {
-		if idList[i] == itemId {
-			// here
-		}
+	location, ok := inventory.isItemInInventory(itemId)
+	if ok {
+		inventory.ItemSlots[location].Amount += amount
+		return true
+	} else if len(inventory.ItemSlots) < inventory.MaxSize {
+			newSlot := ItemSlot{ItemId: itemId, Amount: amount}
+			inventory.ItemSlots = append(inventory.ItemSlots, newSlot)
+			return true
 	}
-
-	if len(inventory.ItemSlots) < inventory.MaxSize {
-		newSlot := ItemSlot{ItemId: itemId, Amount: amount}
-		inventory.ItemSlots = append(inventory.ItemSlots, newSlot)
-	}
+	return false
 }
 
 func (inventory *Inventory) removeItem(itemId string, amount int) {
+}
+
+func (inventory *Inventory) isItemInInventory(itemId string) (int, bool) {
+	idList := inventory.getInventoryItemIds()
+	for i := range idList {
+		if idList[i] == itemId {
+			return i, true
+		}
+	}
+	return -1, false
 }
