@@ -2,10 +2,12 @@ package main
 
 import (
 	"fmt"
+	inv "github.com/Rahmadax/Web-Game-V4/pkg/inventory"
+	//pkg "github.com/Rahmadax/Web-Game-V4/pkg"
+	//game "github.com/Rahmadax/Web-Game-V4/pkg/gameInstance"
 	"github.com/gorilla/websocket"
 	"log"
 	"net/http"
-	"/pkg"
 )
 
 var upgrader = websocket.Upgrader{
@@ -54,7 +56,27 @@ func setupRoutes(){
 
 
 func main() {
-	Player
+	//ollie := &pkg.Player{}
+	//chris := &pkg.Player{}
+	//
+	//ollie.New(0, "Ollie", "Human", 5, 5, 5)
+	//chris.New(1, "Chris", "Dwarf", 10, 0, 5)
+	//
+	//playerList := []pkg.Player{*ollie, *chris}
+	//
+	//session := game.NewGame(playerList, "standard")
+	//
+	//for i := range session.Players {
+	//	fmt.Println(session.Players[i])
+	//}
+
+	itemIds := []string{"0", "1"}
+	items, _ := inv.GetItems(itemIds)
+
+	for i := range items {
+		fmt.Println(items[i].Name)
+	}
+
 }
 //	fmt.Println("Starting Server")
 //	setupRoutes()

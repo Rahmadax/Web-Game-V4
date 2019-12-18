@@ -1,5 +1,0 @@
-package gamePlay
-
-func generateMap(){
-
-}

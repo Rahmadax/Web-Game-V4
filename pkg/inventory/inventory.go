@@ -2,25 +2,94 @@ package inventory
 
 import (
 	"encoding/json"
-	models "github.com/rahmadax/Web-Game-V4/pkg/models"
 	"io/ioutil"
 	"os"
 )
 
-func getItems (itemIds []string) ([]models.Item, error) {
-	var items []models.Item
+type Inventory struct {
+	MaxSize    int
+	Currencies Currencies
+	ItemSlots  []ItemSlot
+}
 
-	jsonFile, err := os.Open("items.json")
+type ItemSlot struct {
+	ItemId string
+	Amount int
+}
+
+type Item struct {
+	Name   string `json:"name"`
+	Group  string `json:"group"`
+	Effect string `json:"effect"`
+	Target string `json:"target"`
+	Count  int    `json:"count"`
+	Value  int    `json:"value"`
+}
+
+type Currencies struct {
+	Gold int
+}
+
+func (inventory *Inventory) getInventoryItemIds() []string {
+	items := inventory.ItemSlots
+
+	idList := make([]string, len(items))
+	for i := range items {
+		idList[i] = items[i].ItemId
+	}
+
+	return idList
+}
+
+func (inventory *Inventory) getInventory() []Item {
+	idList := inventory.getInventoryItemIds()
+
+	itemList, err := GetItems(idList)
 	if err != nil {
-		return items, err
+
+	}
+	return itemList
+
+}
+
+func GetItems(itemIds []string) ([]Item, error) {
+	var items = make(map[string]Item)
+
+	jsonFile, err := os.Open("Web-Game-V4/pkg/inventory/items.json")
+	if err != nil {
+		return []Item{}, err
 	}
 
 	byteValue, _ := ioutil.ReadAll(jsonFile)
 
 	err = json.Unmarshal(byteValue, &items)
 	if err != nil {
-		return items, err
+		return []Item{}, err
 	}
 
-	return items, nil
+	var outputArray = make([]Item, len(itemIds))
+	for i, val := range itemIds {
+		outputArray[i] = items[val]
+	}
+
+	return outputArray, nil
+}
+
+func (inventory *Inventory) AddItem(itemId string, amount int) {
+
+	idList := inventory.getInventoryItemIds()
+
+	for i := range idList {
+		if idList[i] == itemId {
+			inventory.getInventoryItemIds()
+		}
+	}
+
+	if len(inventory.ItemSlots) < inventory.MaxSize {
+		newSlot := ItemSlot{ItemId: itemId, Amount: amount}
+		inventory.ItemSlots = append(inventory.ItemSlots, newSlot)
+	}
+}
+
+func (inventory *Inventory) removeItem(itemId string, amount int) {
 }
