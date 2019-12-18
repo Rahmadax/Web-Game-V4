@@ -60,6 +60,8 @@ func GetItems(itemIds []string) ([]Item, error) {
 		return []Item{}, err
 	}
 
+
+
 	byteValue, _ := ioutil.ReadAll(jsonFile)
 
 	err = json.Unmarshal(byteValue, &items)
@@ -75,28 +77,59 @@ func GetItems(itemIds []string) ([]Item, error) {
 	return outputArray, nil
 }
 
-func (inventory *Inventory) AddItem(itemId string, amount int) bool {
-	location, ok := inventory.isItemInInventory(itemId)
+func (inventory *Inventory) AddItem(itemId string, amountToAdd int) bool {
+	location, _, ok := inventory.findItemInInventory(itemId)
 	if ok {
-		inventory.ItemSlots[location].Amount += amount
+		inventory.ItemSlots[location].Amount += amountToAdd
 		return true
 	} else if len(inventory.ItemSlots) < inventory.MaxSize {
-			newSlot := ItemSlot{ItemId: itemId, Amount: amount}
+			newSlot := ItemSlot{ItemId: itemId, Amount: amountToAdd}
 			inventory.ItemSlots = append(inventory.ItemSlots, newSlot)
 			return true
+	}
+
+	return false
+}
+
+func (inventory *Inventory) RemoveItem(itemId string, amountToRemove int) bool {
+	if len(inventory.ItemSlots) == 0 {
+		return false
+	}
+
+	location, num, ok := inventory.findItemInInventory(itemId)
+	if ok  {
+		if num > amountToRemove {
+			inventory.ItemSlots[location].Amount -= amountToRemove
+		} else if num == amountToRemove {
+			inventory.ItemSlots[location] = ItemSlot{}
+		}
 	}
 	return false
 }
 
-func (inventory *Inventory) removeItem(itemId string, amount int) {
+// Removes empty slots between items. Pushes all items as left as they can go.
+func (inventory *Inventory) CleanInventory() {
+	inv := Inventory{
+		MaxSize: inventory.MaxSize,
+		Currencies:inventory.Currencies,
+		ItemSlots: make([]ItemSlot, inventory.MaxSize),
+	}
+
+	counter := 0
+	for i := 1; i <= inventory.MaxSize; i++ {
+		if inventory.ItemSlots[i].ItemId != "" {
+			inv.ItemSlots[counter] = inventory.ItemSlots[i]
+			counter += 1
+		}
+	}
 }
 
-func (inventory *Inventory) isItemInInventory(itemId string) (int, bool) {
+func (inventory *Inventory) findItemInInventory(itemId string) (int, int, bool) {
 	idList := inventory.getInventoryItemIds()
 	for i := range idList {
 		if idList[i] == itemId {
-			return i, true
+			return i, inventory.ItemSlots[i].Amount, true
 		}
 	}
-	return -1, false
+	return -1, -1, false
 }
