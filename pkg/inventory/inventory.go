@@ -76,7 +76,6 @@ func GetItems(itemIds []string) ([]Item, error) {
 }
 
 func (inventory *Inventory) AddItem(itemId string, amount int) bool {
-
 	location, ok := inventory.isItemInInventory(itemId)
 	if ok {
 		inventory.ItemSlots[location].Amount += amount
