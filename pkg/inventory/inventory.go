@@ -81,7 +81,7 @@ func (inventory *Inventory) AddItem(itemId string, amount int) {
 
 	for i := range idList {
 		if idList[i] == itemId {
-			inventory.getInventoryItemIds()
+			// here
 		}
 	}
 
