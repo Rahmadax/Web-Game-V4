@@ -1,7 +1,6 @@
 package fishing
 
 type Fish struct {
-	Name   string
-	Weight string
-	Value  int
+	Name  string `json:"name"`
+	Value int    `json:"value"`
 }
