@@ -1,7 +1,7 @@
 package game_instance
 
 import (
-	"github.com/rahmadax/Web-Game-V4/pkg/player_data"
+	"github.com/Rahmadax/Web-Game-V4/pkg/player_data"
 )
 
 type GameInstance struct {

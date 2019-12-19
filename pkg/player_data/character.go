@@ -1,6 +1,6 @@
 package player_data
 
-import "github.com/rahmadax/Web-Game-V4/pkg/inventory"
+import "github.com/Rahmadax/Web-Game-V4/pkg/inventory"
 
 type Character struct {
 	Id        int

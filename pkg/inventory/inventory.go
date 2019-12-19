@@ -1,7 +1,7 @@
 package inventory
 
 // vars and constants
-const itemJson = "Web-Game-V4/pkg/inventory/items.json"
+const itemJson = "pkg/inventory/items.json"
 
 // Structures
 type Inventory struct {
@@ -19,14 +19,14 @@ type Item struct {
 	Name        string `json:"name"`
 	Description string `json:"description"`
 	Group       string `json:"group"`
-	Effect      string `json:"effect"`
 	Target      string `json:"target"`
-	Count       int    `json:"count"`
+	Effect      string `json:"effect"`
+	EffectValue int    `json:"effect_value"`
 	Value       int    `json:"value"`
 	MaxStack    int    `json:"max_stack"`
 }
 
-// Core Exported Functionality
+// Exported Functions
 // Retrieve a full inventory to be returned to the client.
 func (inventory *Inventory) GetInventory() ([]Item, error) {
 	idList := inventory.getInventoryItemIds()
@@ -54,6 +54,7 @@ func (inventory *Inventory) CleanInventory() {
 	inventory.ItemSlots = itemSlots
 }
 
+// Private Functions
 func (inventory *Inventory) addItem(itemId string, amountStillToAdd int) (bool, error) {
 	bought := false
 
@@ -127,6 +128,20 @@ func (inventory *Inventory) removeItem(itemId string, position int, amountToRemo
 	}
 
 	return 0, false
+}
+
+func (inventory *Inventory) MoveItem(currentSlot int, destinationSlot int) {
+	if currentSlot < inventory.MaxSize && destinationSlot < inventory.MaxSize && currentSlot >= 0 && destinationSlot >= 0 {
+		slots := inventory.ItemSlots
+		if slots[destinationSlot].ItemId == "" {
+			slots[destinationSlot] = slots[currentSlot]
+			slots[currentSlot] = ItemSlot{}
+		} else {
+			temp := slots[destinationSlot]
+			slots[destinationSlot] = slots[currentSlot]
+			slots[currentSlot] = temp
+		}
+	}
 }
 
 // Utility Functions

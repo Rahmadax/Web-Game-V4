@@ -1,25 +1,110 @@
 {
     "0": {
-        "name": "Small Health Potion",
+        "name": "Tiny Health Potion",
         "description": "",
         "group": "potion",
-        "effect": "heal",
         "target": "self",
-        "count": 5,
+        "effect": "heal",
+        "effect_value": 5,
         "value": 10,
         "max_stack": 10
     },
 
     "1": {
+        "name": "Tiny Mana Potion",
+        "description": "",
+        "group": "potion",
+        "target": "self",
+        "effect": "heal",
+        "effect_value": 20,
+        "value": 10,
+        "max_stack": 10
+    },
+    "2": {
+        "name": "Small Health Potion",
+        "description": "",
+        "group": "potion",
+        "target": "self",
+        "effect": "heal",
+        "effect_value": 5,
+        "value": 10,
+        "max_stack": 10
+    },
+
+    "3": {
+        "name": "Small Mana Potion",
+        "description": "",
+        "group": "potion",
+        "target": "self",
+        "effect": "heal",
+        "effect_value": 20,
+        "value": 10,
+        "max_stack": 10
+    },
+
+    "4": {
+        "name": "Medium Health Potion",
+        "description": "",
+        "group": "potion",
+        "target": "self",
+        "effect": "heal",
+        "effect_value": 5,
+        "value": 10,
+        "max_stack": 10
+    },
+
+    "5": {
+        "name": "Medium Mana Potion",
+        "description": "",
+        "group": "potion",
+        "target": "self",
+        "effect": "heal",
+        "effect_value": 20,
+        "value": 10,
+        "max_stack": 10
+    },
+
+    "6": {
         "name": "Large Health Potion",
         "description": "",
         "group": "potion",
-        "effect": "heal",
         "target": "self",
-        "count": 20,
+        "effect": "heal",
+        "effect_value": 5,
         "value": 10,
         "max_stack": 10
+    },
 
+    "7": {
+        "name": "Large Mana Potion",
+        "description": "",
+        "group": "potion",
+        "target": "self",
+        "effect": "heal",
+        "effect_value": 20,
+        "value": 10,
+        "max_stack": 10
+    },
+    "8": {
+        "name": "Giant Health Potion",
+        "description": "",
+        "group": "potion",
+        "target": "self",
+        "effect": "heal",
+        "effect_value": 5,
+        "value": 10,
+        "max_stack": 10
+    },
+
+    "9": {
+        "name": "Giant Mana Potion",
+        "description": "",
+        "group": "potion",
+        "target": "self",
+        "effect": "heal",
+        "effect_value": 20,
+        "value": 10,
+        "max_stack": 10
     }
 }
 
