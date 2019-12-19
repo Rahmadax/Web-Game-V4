@@ -1,11 +1,9 @@
 package inventory
 
-import (
-	"encoding/json"
-	"io/ioutil"
-	"os"
-)
+// vars and constants
+const itemJson = "Web-Game-V4/pkg/inventory/items.json"
 
+// Structures
 type Inventory struct {
 	MaxSize    int
 	Currencies Currencies
@@ -18,18 +16,120 @@ type ItemSlot struct {
 }
 
 type Item struct {
-	Name   string `json:"name"`
-	Group  string `json:"group"`
-	Effect string `json:"effect"`
-	Target string `json:"target"`
-	Count  int    `json:"count"`
-	Value  int    `json:"value"`
+	Name        string `json:"name"`
+	Description string `json:"description"`
+	Group       string `json:"group"`
+	Effect      string `json:"effect"`
+	Target      string `json:"target"`
+	Count       int    `json:"count"`
+	Value       int    `json:"value"`
+	MaxStack    int    `json:"max_stack"`
 }
 
-type Currencies struct {
-	Gold int
+// Core Exported Functionality
+// Retrieve a full inventory to be returned to the client.
+func (inventory *Inventory) GetInventory() ([]Item, error) {
+	idList := inventory.getInventoryItemIds()
+
+	itemList, err := getItems(idList)
+	if err != nil {
+		return []Item{}, err
+	}
+
+	return itemList, nil
 }
 
+// Removes empty slots between items. Pushes all items as far left as they can go.
+func (inventory *Inventory) CleanInventory() {
+	itemSlots := make([]ItemSlot, inventory.MaxSize)
+
+	counter := 0
+	for i := 0; i < inventory.MaxSize; i++ {
+		if inventory.ItemSlots[i].ItemId != "" {
+			itemSlots[counter] = inventory.ItemSlots[i]
+			counter += 1
+		}
+	}
+
+	inventory.ItemSlots = itemSlots
+}
+
+func (inventory *Inventory) addItem(itemId string, amountStillToAdd int) (bool, error) {
+	bought := false
+
+	invInfo, inInv := inventory.findItemInInventory(itemId)
+	item, err := getItem(itemId)
+	if err != nil {
+		return false, err
+	}
+	maxStack := item.MaxStack
+
+	// Fill slots that already have that item
+	if inInv {
+		bought = true
+		for i := range invInfo {
+			if amountStillToAdd == 0 {
+				break
+			}
+			space := maxStack - invInfo[i].amount
+			if space > 0 {
+				if space <= amountStillToAdd {
+					inventory.ItemSlots[invInfo[i].location].Amount = maxStack
+					amountStillToAdd -= space
+				} else if space > amountStillToAdd {
+					inventory.ItemSlots[invInfo[i].location].Amount += amountStillToAdd
+					amountStillToAdd = 0
+				}
+			}
+		}
+	}
+
+	// Fill additional empty slots
+	if amountStillToAdd > 0 {
+		emptySlotLocations, ok := inventory.findEmptyInventorySlots()
+		if ok {
+			for i := range emptySlotLocations {
+				if amountStillToAdd == 0 {
+					return true, nil
+				}
+
+				newSlot := ItemSlot{}
+				if amountStillToAdd > maxStack {
+					newSlot = ItemSlot{ItemId: itemId, Amount: maxStack}
+					amountStillToAdd -= maxStack
+				} else if amountStillToAdd < maxStack {
+					newSlot = ItemSlot{ItemId: itemId, Amount: amountStillToAdd}
+					amountStillToAdd -= amountStillToAdd
+				}
+				inventory.ItemSlots[emptySlotLocations[i]] = newSlot
+			}
+		}
+	}
+	return bought, nil
+}
+
+func (inventory *Inventory) removeItem(itemId string, position int, amountToRemove int) (int, bool) {
+	if len(inventory.ItemSlots) == 0 {
+		return 0, false
+	}
+	thisSlot := inventory.ItemSlots[position]
+	if thisSlot.ItemId == itemId {
+		if thisSlot.Amount > amountToRemove {
+			inventory.ItemSlots[position].Amount -= amountToRemove
+			return amountToRemove, true
+		} else if thisSlot.Amount == amountToRemove {
+			inventory.ItemSlots[position] = ItemSlot{}
+			return amountToRemove, true
+		} else if thisSlot.Amount < amountToRemove {
+			inventory.ItemSlots[position] = ItemSlot{}
+			return thisSlot.Amount, true
+		}
+	}
+
+	return 0, false
+}
+
+// Utility Functions
 func (inventory *Inventory) getInventoryItemIds() []string {
 	items := inventory.ItemSlots
 
@@ -37,99 +137,46 @@ func (inventory *Inventory) getInventoryItemIds() []string {
 	for i := range items {
 		idList[i] = items[i].ItemId
 	}
-
 	return idList
 }
 
-func (inventory *Inventory) getInventory() []Item {
+type invInfo struct {
+	location int
+	amount   int
+}
+
+func (inventory *Inventory) findItemInInventory(itemId string) ([]invInfo, bool) {
 	idList := inventory.getInventoryItemIds()
 
-	itemList, err := GetItems(idList)
-	if err != nil {
-
-	}
-	return itemList
-
-}
-
-func GetItems(itemIds []string) ([]Item, error) {
-	var items = make(map[string]Item)
-
-	jsonFile, err := os.Open("Web-Game-V4/pkg/inventory/items.json")
-	if err != nil {
-		return []Item{}, err
-	}
-
-
-
-	byteValue, _ := ioutil.ReadAll(jsonFile)
-
-	err = json.Unmarshal(byteValue, &items)
-	if err != nil {
-		return []Item{}, err
-	}
-
-	var outputArray = make([]Item, len(itemIds))
-	for i, val := range itemIds {
-		outputArray[i] = items[val]
-	}
-
-	return outputArray, nil
-}
-
-func (inventory *Inventory) AddItem(itemId string, amountToAdd int) bool {
-	location, _, ok := inventory.findItemInInventory(itemId)
-	if ok {
-		inventory.ItemSlots[location].Amount += amountToAdd
-		return true
-	} else if len(inventory.ItemSlots) < inventory.MaxSize {
-			newSlot := ItemSlot{ItemId: itemId, Amount: amountToAdd}
-			inventory.ItemSlots = append(inventory.ItemSlots, newSlot)
-			return true
-	}
-
-	return false
-}
-
-func (inventory *Inventory) RemoveItem(itemId string, amountToRemove int) bool {
-	if len(inventory.ItemSlots) == 0 {
-		return false
-	}
-
-	location, num, ok := inventory.findItemInInventory(itemId)
-	if ok  {
-		if num > amountToRemove {
-			inventory.ItemSlots[location].Amount -= amountToRemove
-		} else if num == amountToRemove {
-			inventory.ItemSlots[location] = ItemSlot{}
-		}
-	}
-	return false
-}
-
-// Removes empty slots between items. Pushes all items as left as they can go.
-func (inventory *Inventory) CleanInventory() {
-	inv := Inventory{
-		MaxSize: inventory.MaxSize,
-		Currencies:inventory.Currencies,
-		ItemSlots: make([]ItemSlot, inventory.MaxSize),
-	}
-
-	counter := 0
-	for i := 1; i <= inventory.MaxSize; i++ {
-		if inventory.ItemSlots[i].ItemId != "" {
-			inv.ItemSlots[counter] = inventory.ItemSlots[i]
-			counter += 1
-		}
-	}
-}
-
-func (inventory *Inventory) findItemInInventory(itemId string) (int, int, bool) {
-	idList := inventory.getInventoryItemIds()
+	var invInfoArr []invInfo
 	for i := range idList {
 		if idList[i] == itemId {
-			return i, inventory.ItemSlots[i].Amount, true
+			invInfo := invInfo{
+				location: i,
+				amount:   inventory.ItemSlots[i].Amount,
+			}
+			invInfoArr = append(invInfoArr, invInfo)
 		}
 	}
-	return -1, -1, false
+	if len(invInfoArr) == 0 {
+		return invInfoArr, false
+	} else {
+		return invInfoArr, true
+	}
+}
+
+func (inventory *Inventory) findEmptyInventorySlots() ([]int, bool) {
+	idList := inventory.getInventoryItemIds()
+
+	var emptySlotLocations []int
+	for i := range idList {
+		if idList[i] == "" {
+			emptySlotLocations = append(emptySlotLocations, i)
+		}
+	}
+	if len(emptySlotLocations) == 0 {
+		return emptySlotLocations, false
+	} else {
+		return emptySlotLocations, true
+	}
 }
