@@ -1,4 +1,4 @@
-package player_data
+package player
 
 import "github.com/Rahmadax/Web-Game-V4/pkg/inventory"
 
@@ -8,15 +8,24 @@ type Character struct {
 	Class     string
 	Hp        int
 	Mp        int
-	inventory inventory.Inventory
+	Inventory inventory.Inventory
 }
 
-func (character *Character) New(id int, name string, class string, hp int, mp int) {
+func (character *Character) New(id int, name string) {
 	character.Id = id
 	character.Name = name
-	character.Class = class
-	character.Hp = hp
-	character.Mp = mp
+	character.Class = "human"
+	character.Hp = 10
+	character.Mp = 10
+	character.Inventory = generateBasicInventory()
+}
+
+func generateBasicInventory() inventory.Inventory {
+	return inventory.Inventory{
+		MaxSize: 12,
+		Currencies: inventory.Currencies{Gold:20},
+		ItemSlots: make([]inventory.ItemSlot, 12),
+	}
 }
 
 func (character Character) ChangeHp(change int) {

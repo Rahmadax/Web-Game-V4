@@ -39,6 +39,21 @@ func (inventory *Inventory) GetInventory() ([]Item, error) {
 	return itemList, nil
 }
 
+// Move items around the inventory
+func (inventory *Inventory) MoveItem(currentSlot int, destinationSlot int) {
+	if currentSlot < inventory.MaxSize && destinationSlot < inventory.MaxSize && currentSlot >= 0 && destinationSlot >= 0 {
+		slots := inventory.ItemSlots
+		if slots[destinationSlot].ItemId == "" {
+			slots[destinationSlot] = slots[currentSlot]
+			slots[currentSlot] = ItemSlot{}
+		} else {
+			temp := slots[destinationSlot]
+			slots[destinationSlot] = slots[currentSlot]
+			slots[currentSlot] = temp
+		}
+	}
+}
+
 // Removes empty slots between items. Pushes all items as far left as they can go.
 func (inventory *Inventory) CleanInventory() {
 	itemSlots := make([]ItemSlot, inventory.MaxSize)
@@ -56,9 +71,8 @@ func (inventory *Inventory) CleanInventory() {
 
 // Private Functions
 func (inventory *Inventory) addItem(itemId string, amountStillToAdd int) (bool, error) {
-	bought := false
+	added := false
 
-	invInfo, inInv := inventory.findItemInInventory(itemId)
 	item, err := getItem(itemId)
 	if err != nil {
 		return false, err
@@ -66,26 +80,29 @@ func (inventory *Inventory) addItem(itemId string, amountStillToAdd int) (bool, 
 	maxStack := item.MaxStack
 
 	// Fill slots that already have that item
-	if inInv {
-		bought = true
-		for i := range invInfo {
-			if amountStillToAdd == 0 {
-				break
-			}
-			space := maxStack - invInfo[i].amount
-			if space > 0 {
-				if space <= amountStillToAdd {
-					inventory.ItemSlots[invInfo[i].location].Amount = maxStack
-					amountStillToAdd -= space
-				} else if space > amountStillToAdd {
-					inventory.ItemSlots[invInfo[i].location].Amount += amountStillToAdd
-					amountStillToAdd = 0
+	if maxStack > 1 {
+		invInfo, inInv := inventory.findItemInInventory(itemId)
+		if inInv {
+			added = true
+			for i := range invInfo {
+				if amountStillToAdd == 0 {
+					break
+				}
+				space := maxStack - invInfo[i].amount
+				if space > 0 {
+					if space <= amountStillToAdd {
+						inventory.ItemSlots[invInfo[i].location].Amount = maxStack
+						amountStillToAdd -= space
+					} else if space > amountStillToAdd {
+						inventory.ItemSlots[invInfo[i].location].Amount += amountStillToAdd
+						amountStillToAdd = 0
+					}
 				}
 			}
 		}
 	}
 
-	// Fill additional empty slots
+	// Fill additional empty slots if required
 	if amountStillToAdd > 0 {
 		emptySlotLocations, ok := inventory.findEmptyInventorySlots()
 		if ok {
@@ -106,7 +123,7 @@ func (inventory *Inventory) addItem(itemId string, amountStillToAdd int) (bool, 
 			}
 		}
 	}
-	return bought, nil
+	return added, nil
 }
 
 func (inventory *Inventory) removeItem(itemId string, position int, amountToRemove int) (int, bool) {
@@ -128,20 +145,6 @@ func (inventory *Inventory) removeItem(itemId string, position int, amountToRemo
 	}
 
 	return 0, false
-}
-
-func (inventory *Inventory) MoveItem(currentSlot int, destinationSlot int) {
-	if currentSlot < inventory.MaxSize && destinationSlot < inventory.MaxSize && currentSlot >= 0 && destinationSlot >= 0 {
-		slots := inventory.ItemSlots
-		if slots[destinationSlot].ItemId == "" {
-			slots[destinationSlot] = slots[currentSlot]
-			slots[currentSlot] = ItemSlot{}
-		} else {
-			temp := slots[destinationSlot]
-			slots[destinationSlot] = slots[currentSlot]
-			slots[currentSlot] = temp
-		}
-	}
 }
 
 // Utility Functions

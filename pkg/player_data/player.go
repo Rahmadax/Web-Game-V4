@@ -1,4 +1,4 @@
-package player_data
+package player
 
 type Player struct {
 	Id             string
