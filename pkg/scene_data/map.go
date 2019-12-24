@@ -1,5 +1,5 @@
 package scene_data
 
-type Map struct {
+type TileMap struct {
 	Map [][]Tile
 }

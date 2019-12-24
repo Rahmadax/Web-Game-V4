@@ -123,6 +123,7 @@ func (inventory *Inventory) addItem(itemId string, amountStillToAdd int) (bool, 
 			}
 		}
 	}
+
 	return added, nil
 }
 
@@ -155,6 +156,7 @@ func (inventory *Inventory) getInventoryItemIds() []string {
 	for i := range items {
 		idList[i] = items[i].ItemId
 	}
+
 	return idList
 }
 

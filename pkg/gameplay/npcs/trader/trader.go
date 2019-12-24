@@ -1,8 +1,8 @@
-package trade
+package trader
 
 import (
 	"github.com/Rahmadax/Web-Game-V4/pkg/inventory"
-	"github.com/Rahmadax/Web-Game-V4/pkg/player_data"
+	player "github.com/Rahmadax/Web-Game-V4/pkg/player_data"
 )
 
 type Trader struct {
@@ -19,6 +19,6 @@ func (trader *Trader) generateInventory() {
 }
 
 // Private Functions
-func (character *player_data.Character) trade() {
+func (character *player.Character) trade() {
 
 }

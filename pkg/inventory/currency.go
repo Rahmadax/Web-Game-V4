@@ -37,3 +37,4 @@ func (inventory *Inventory) BuyItem(itemId string, amount int) (bool, int, error
 
 	return false, 0, nil
 }
+
