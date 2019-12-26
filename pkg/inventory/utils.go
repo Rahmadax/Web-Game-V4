@@ -1,49 +1,30 @@
 package inventory
 
 import (
-	"encoding/json"
-	"io/ioutil"
-	"os"
+	"github.com/Rahmadax/Web-Game-V4/pkg/utils"
 )
 
-// Private Helper Functions (lower case)
-func getItems(itemIds []string) ([]Item, error) {
-	var items = make(map[string]Item)
-
-	jsonFile, err := os.Open(itemJson)
-	if err != nil {
-		return []Item{}, err
-	}
-
-	byteValue, _ := ioutil.ReadAll(jsonFile)
-
-	err = json.Unmarshal(byteValue, &items)
-	if err != nil {
-		return []Item{}, err
-	}
-
-	var outputArray = make([]Item, len(itemIds))
-	for i, val := range itemIds {
-		outputArray[i] = items[val]
-	}
-
-	return outputArray, nil
-}
-
-func getItem(itemId string) (Item, error) {
-	var items = make(map[string]Item)
-
-	jsonFile, err := os.Open(itemJson)
+func GetItem(id string) (Item, error) {
+	items, err := utils.GetObjectFromJson(ItemJson)
 	if err != nil {
 		return Item{}, err
 	}
 
-	byteValue, _ := ioutil.ReadAll(jsonFile)
+	return items.(map[string]Item)[id], nil
+}
 
-	err = json.Unmarshal(byteValue, &items)
+func GetItems(idList []string) ([]Item, error) {
+	items, err := utils.GetObjectFromJson(ItemJson)
 	if err != nil {
-		return Item{}, err
+		return []Item{}, err
+	}
+	it := items.(map[string]interface{})
+
+	returnArr := make([]Item, len(idList))
+	for i := 0; i < len(idList); i++ {
+		returnArr[i] = it[idList[i]].(Item)
 	}
 
-	return items[itemId], nil
+	return returnArr, nil
 }
+

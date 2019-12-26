@@ -1,7 +1,7 @@
 package inventory
 
 // vars and constants
-const itemJson = "pkg/inventory/items.json"
+const ItemJson = "pkg/inventory/items.json"
 
 // Structures
 type Inventory struct {
@@ -15,28 +15,17 @@ type ItemSlot struct {
 	Amount int
 }
 
-type Item struct {
-	Name        string `json:"name"`
-	Description string `json:"description"`
-	Group       string `json:"group"`
-	Target      string `json:"target"`
-	Effect      string `json:"effect"`
-	EffectValue int    `json:"effect_value"`
-	Value       int    `json:"value"`
-	MaxStack    int    `json:"max_stack"`
-}
-
 // Exported Functions
 // Retrieve a full inventory to be returned to the client.
 func (inventory *Inventory) GetInventory() ([]Item, error) {
 	idList := inventory.getInventoryItemIds()
 
-	itemList, err := getItems(idList)
+	items, err := GetItems(idList)
 	if err != nil {
 		return []Item{}, err
 	}
 
-	return itemList, nil
+	return items, nil
 }
 
 // Move items around the inventory
@@ -71,14 +60,13 @@ func (inventory *Inventory) CleanInventory() {
 
 // Private Functions
 func (inventory *Inventory) addItem(itemId string, amountStillToAdd int) (bool, error) {
-	added := false
-
-	item, err := getItem(itemId)
+	item, err := GetItem(itemId)
 	if err != nil {
 		return false, err
 	}
-	maxStack := item.MaxStack
 
+	maxStack := item.MaxStack
+	added := false
 	// Fill slots that already have that item
 	if maxStack > 1 {
 		invInfo, inInv := inventory.findItemInInventory(itemId)

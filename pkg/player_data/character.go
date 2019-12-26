@@ -22,9 +22,9 @@ func (character *Character) New(id int, name string) {
 
 func generateBasicInventory() inventory.Inventory {
 	return inventory.Inventory{
-		MaxSize: 12,
-		Currencies: inventory.Currencies{Gold:20},
-		ItemSlots: make([]inventory.ItemSlot, 12),
+		MaxSize:    12,
+		Currencies: inventory.Currencies{Gold: 20},
+		ItemSlots:  make([]inventory.ItemSlot, 12),
 	}
 }
 

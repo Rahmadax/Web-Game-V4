@@ -1,2 +1,1 @@
 package town_person
-

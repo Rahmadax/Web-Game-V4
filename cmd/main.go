@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	inv "github.com/Rahmadax/Web-Game-V4/pkg/inventory"
-	"github.com/Rahmadax/Web-Game-V4/pkg/player_data"
 	"github.com/gorilla/websocket"
 	"log"
 	"net/http"
@@ -49,44 +48,42 @@ func wsEndpoint(w http.ResponseWriter, r *http.Request) {
 
 func setupRoutes() {
 	http.HandleFunc("/", homepage)
-	http.HandleFunc("we", wsEndpoint)
+	http.HandleFunc("ws", wsEndpoint)
 }
 
 func main() {
+	runItemTests()
+}
 
-	ollie := &player_data.Character{}
-	ollie.New(1, "ollie")
-	fmt.Println(*ollie)
+func runItemTests() {
+	itemIds := make([]string, 3)
+	itemIds[0]= "4"
+	itemIds[1] = "3"
+	itemIds[2] = "7"
 
+	items, err := inv.GetItems(itemIds)
+	if err != nil {
+		fmt.Println(err)
+	}
 
-	//inv := createInventory()
-	//fmt.Println(inv.ItemSlots)
-	//inv.MoveItem(0, 7)
-	//fmt.Println(inv.ItemSlots)
+	fmt.Println(items)
+}
 
-
-	//fmt.Println(inv.Currencies.Gold)
+func testMap (){
+	//m := maps.GenTileMap()
 	//
-	//ok, num, _ := inv.BuyItem("1", 120)
-	//if ok {
-	//	fmt.Println(inv.Currencies.Gold)
-	//	fmt.Println("Num: ", num)
+	//for row := 0; row < len(m.Tiles); row++ {
+	//	for col := 0; col < len(m.Tiles[row]); col++ {
+	//		fmt.Print(m.Tiles[row][col].Id, " ")
+	//	}
+	//	fmt.Println()
 	//}
-	//fmt.Println(inv.ItemSlots)
-	//fmt.Println(inv.Currencies.Gold)
 	//
-	//inv.SellItem("1", 1, 5)
-	//fmt.Println(inv.ItemSlots)
-	//fmt.Println(inv.Currencies.Gold)
+	//node := maps.Coords{Y: 1, X: 1}
 	//
-	//inv.SellItem("1", 1, 6)
-	//fmt.Println(inv.ItemSlots)
-	//fmt.Println(inv.Currencies.Gold)
-	//
-	//inv.SellItem("1", 1, 1)
-	//fmt.Println(inv.ItemSlots)
-	//fmt.Println(inv.Currencies.Gold)
-
+	//direction := "north"
+	//t := m.CheckValidIndex(node, direction)
+	//fmt.Println(direction, ":", t)
 }
 
 func createInventory() inv.Inventory {

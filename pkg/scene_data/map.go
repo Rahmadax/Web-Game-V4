@@ -1,5 +1,9 @@
 package scene_data
 
 type TileMap struct {
-	Map [][]Tile
+	Tiles [][]Tile
+}
+
+func (tileMap TileMap) getTileType() {
+
 }

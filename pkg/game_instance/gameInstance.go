@@ -5,7 +5,7 @@ import (
 )
 
 type GameInstance struct {
-	Players []player_data.Player
+	Players  []player_data.Player
 	GameMode string
 }
 

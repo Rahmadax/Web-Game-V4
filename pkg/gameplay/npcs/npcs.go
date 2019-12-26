@@ -14,7 +14,6 @@ type Behaviour struct {
 // NPC Active moves (Has seen the player)
 type SeenRules struct {
 	Move bool
-	
 }
 
 // After an NPC has seen and then subsequently lost the player
