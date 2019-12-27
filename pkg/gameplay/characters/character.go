@@ -1,6 +1,6 @@
-package gameplay
+package characters
 
-import "github.com/Rahmadax/Web-Game-V4/pkg/inventory"
+import inventory "github.com/Rahmadax/Web-Game-V4/pkg/gameplay/inventory"
 
 type Character struct {
 	Id        int

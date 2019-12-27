@@ -1,4 +1,4 @@
-package scene_data
+package scene
 
 import (
 "github.com/Rahmadax/Web-Game-V4/pkg/jsons"

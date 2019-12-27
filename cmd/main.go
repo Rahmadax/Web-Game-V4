@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	inv "github.com/Rahmadax/Web-Game-V4/pkg/inventory"
+	inv "github.com/Rahmadax/Web-Game-V4/pkg/gameplay/inventory"
 	"github.com/gorilla/websocket"
 	"log"
 	"net/http"

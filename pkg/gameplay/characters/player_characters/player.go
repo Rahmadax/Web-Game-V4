@@ -1,4 +1,4 @@
-package gameplay
+package characters
 
 import "github.com/Rahmadax/Web-Game-V4/pkg/gameplay/characters"
 

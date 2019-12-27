@@ -1,4 +1,4 @@
-package scene_data
+package scene
 
 type Scene struct {
 	Owner string
@@ -6,5 +6,5 @@ type Scene struct {
 }
 
 func GenerateNewScene(level int){
-	
+
 }

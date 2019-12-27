@@ -1,7 +1,7 @@
-package gameplay
+package characters
 
 import (
-	"github.com/Rahmadax/Web-Game-V4/pkg/inventory"
+	"github.com/Rahmadax/Web-Game-V4/pkg/gameplay/inventory"
 )
 
 type Trader struct {

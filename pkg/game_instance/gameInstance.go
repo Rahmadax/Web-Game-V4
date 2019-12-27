@@ -2,12 +2,12 @@ package game_instance
 
 import (
 	"github.com/Rahmadax/Web-Game-V4/pkg/gameplay/characters/player_characters"
-	"github.com/Rahmadax/Web-Game-V4/pkg/gameplay/scene_data"
+	"github.com/Rahmadax/Web-Game-V4/pkg/gameplay/scene"
 )
 
 type GameInstance struct {
 	Players  []player.Player
-	scenes []scene_data.s
+	scenes []scene.s
 	GameMode string
 }
 

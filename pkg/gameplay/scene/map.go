@@ -1,4 +1,4 @@
-package scene_data
+package scene
 
 type TileMap struct {
 	Tiles [][]Tile
