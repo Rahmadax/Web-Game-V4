@@ -2,31 +2,34 @@ package utils
 
 import (
 	"encoding/json"
-	"github.com/Rahmadax/Web-Game-V4/pkg/jsons"
 	"github.com/Rahmadax/Web-Game-V4/pkg/models"
+	"github.com/Rahmadax/Web-Game-V4/pkg/scene_data"
 	"io/ioutil"
 	"os"
 )
 
-func GetObjectFromJson(route string) (interface{}, error) {
-	var inter interface{}
-
-	switch route {
-	case jsons.ItemJson:
-		inter = make(map[string]models.Item)
-	}
-
+func GetObjectFromJson(route string, i interface{}) error {
 	jsonFile, err := os.Open(route)
 	if err != nil {
-		return nil, nil
+		return err
 	}
 
-	byteValue, _ := ioutil.ReadAll(jsonFile)
-
-	err = json.Unmarshal(byteValue, &inter)
+	byteValue, err := ioutil.ReadAll(jsonFile)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	return inter, nil
+	switch i.(type) {
+	case *map[string]models.Item:
+	case *map[string]scene_data.Tile:
+	default:
+		return nil
+	}
+
+	err = json.Unmarshal(byteValue, &i)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

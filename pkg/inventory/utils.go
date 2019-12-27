@@ -1,30 +1,33 @@
 package inventory
 
 import (
+	"github.com/Rahmadax/Web-Game-V4/pkg/jsons"
+	"github.com/Rahmadax/Web-Game-V4/pkg/models"
 	"github.com/Rahmadax/Web-Game-V4/pkg/utils"
 )
 
-func GetItem(id string) (Item, error) {
-	items, err := utils.GetObjectFromJson(ItemJson)
+func GetItem(id string) (models.Item, error) {
+	itemStruct := map[string]models.Item{}
+	err := utils.GetObjectFromJson(jsons.ItemJson, itemStruct)
 	if err != nil {
-		return Item{}, err
+		return models.Item{}, err
 	}
 
-	return items.(map[string]Item)[id], nil
+	return itemStruct[id], nil
 }
 
-func GetItems(idList []string) ([]Item, error) {
-	items, err := utils.GetObjectFromJson(ItemJson)
-	if err != nil {
-		return []Item{}, err
-	}
-	it := items.(map[string]interface{})
+func GetItems(idList []string) ([]models.Item, error) {
+	itemStruct := map[string]models.Item{}
 
-	returnArr := make([]Item, len(idList))
+	err := utils.GetObjectFromJson(jsons.ItemJson, &itemStruct)
+	if err != nil {
+		return []models.Item{}, err
+	}
+
+	returnArr := make([]models.Item, len(idList))
 	for i := 0; i < len(idList); i++ {
-		returnArr[i] = it[idList[i]].(Item)
+		returnArr[i] = itemStruct[idList[i]]
 	}
 
 	return returnArr, nil
 }
-

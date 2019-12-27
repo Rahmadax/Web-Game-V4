@@ -1,7 +1,8 @@
 package inventory
 
-// vars and constants
-const ItemJson = "pkg/inventory/items.json"
+import (
+	"github.com/Rahmadax/Web-Game-V4/pkg/models"
+)
 
 // Structures
 type Inventory struct {
@@ -17,12 +18,12 @@ type ItemSlot struct {
 
 // Exported Functions
 // Retrieve a full inventory to be returned to the client.
-func (inventory *Inventory) GetInventory() ([]Item, error) {
+func (inventory *Inventory) GetInventory() ([]models.Item, error) {
 	idList := inventory.getInventoryItemIds()
 
 	items, err := GetItems(idList)
 	if err != nil {
-		return []Item{}, err
+		return []models.Item{}, err
 	}
 
 	return items, nil

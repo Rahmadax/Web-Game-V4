@@ -57,7 +57,7 @@ func main() {
 
 func runItemTests() {
 	itemIds := make([]string, 3)
-	itemIds[0]= "4"
+	itemIds[0] = "4"
 	itemIds[1] = "3"
 	itemIds[2] = "7"
 
@@ -69,7 +69,7 @@ func runItemTests() {
 	fmt.Println(items)
 }
 
-func testMap (){
+func testMap() {
 	//m := maps.GenTileMap()
 	//
 	//for row := 0; row < len(m.Tiles); row++ {

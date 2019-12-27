@@ -1,9 +1,5 @@
 package scene_data
 
-import (
-	"strconv"
-)
-
 type Coords struct {
 	X int
 	Y int
@@ -69,19 +65,12 @@ func GenTileMap() TileMap {
 
 	tiles := make([][]Tile, 0)
 
-	tile := Tile{
-		Id:     "0",
-		Cost:   0,
-		Sprite: "",
-		Action: nil,
-	}
+	tile := Tile{}
 
 	for row := 0; row < 6; row++ {
 		tileArr := make([]Tile, row+1)
 		tiles = append(tiles, tileArr)
 		for col := 0; col < row+1; col++ {
-			id := strconv.Itoa(row) + strconv.Itoa(col)
-			tile.Id = id
 			tiles[row][col] = tile
 		}
 	}
