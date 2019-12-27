@@ -1,10 +1,17 @@
 package inventory
 
-import (
-	"github.com/Rahmadax/Web-Game-V4/pkg/models"
-)
-
 // Structures
+type Item struct {
+	Name        string `json:"name"`
+	Description string `json:"description"`
+	Group       string `json:"group"`
+	Target      string `json:"target"`
+	Effect      string `json:"effect"`
+	EffectValue int    `json:"effect_value"`
+	Value       int    `json:"value"`
+	MaxStack    int    `json:"max_stack"`
+}
+
 type Inventory struct {
 	MaxSize    int
 	Currencies Currencies
@@ -18,12 +25,12 @@ type ItemSlot struct {
 
 // Exported Functions
 // Retrieve a full inventory to be returned to the client.
-func (inventory *Inventory) GetInventory() ([]models.Item, error) {
+func (inventory *Inventory) GetInventory() ([]Item, error) {
 	idList := inventory.getInventoryItemIds()
 
 	items, err := GetItems(idList)
 	if err != nil {
-		return []models.Item{}, err
+		return []Item{}, err
 	}
 
 	return items, nil

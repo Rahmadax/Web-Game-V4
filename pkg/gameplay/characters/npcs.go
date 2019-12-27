@@ -1,4 +1,4 @@
-package npcs
+package gameplay
 
 type Npc interface {
 	Interaction()

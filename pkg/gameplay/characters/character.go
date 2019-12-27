@@ -1,4 +1,4 @@
-package player
+package gameplay
 
 import "github.com/Rahmadax/Web-Game-V4/pkg/inventory"
 
@@ -28,10 +28,4 @@ func generateBasicInventory() inventory.Inventory {
 	}
 }
 
-func (character Character) ChangeHp(change int) {
-	character.Hp += change
-}
 
-func (character Character) ChangeMp(change int) {
-	character.Mp += change
-}

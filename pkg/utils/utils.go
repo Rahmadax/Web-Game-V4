@@ -2,8 +2,6 @@ package utils
 
 import (
 	"encoding/json"
-	"github.com/Rahmadax/Web-Game-V4/pkg/models"
-	"github.com/Rahmadax/Web-Game-V4/pkg/scene_data"
 	"io/ioutil"
 	"os"
 )
@@ -19,12 +17,7 @@ func GetObjectFromJson(route string, i interface{}) error {
 		return err
 	}
 
-	switch i.(type) {
-	case *map[string]models.Item:
-	case *map[string]scene_data.Tile:
-	default:
-		return nil
-	}
+	switch i.(type){}
 
 	err = json.Unmarshal(byteValue, &i)
 	if err != nil {

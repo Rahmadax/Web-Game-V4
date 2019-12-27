@@ -26,8 +26,12 @@ func manhattanHeuristic(node Coords, end Coords) Coords {
 	}
 }
 
-func (tileMap TileMap) CheckIfWall() {
-
+func (tileMap TileMap) CheckIfWall(node Coords) bool {
+	if tileMap.Tiles[node.X][node.Y].Cost == -1 {
+		return true
+	} else {
+		return false
+	}
 }
 
 func (tileMap TileMap) CheckValidIndex(node Coords, direction string) bool {
