@@ -2,7 +2,6 @@ package trade
 
 import (
 	"github.com/Rahmadax/Web-Game-V4/pkg/inventory"
-	"github.com/Rahmadax/Web-Game-V4/pkg/player_data"
 )
 
 type Trader struct {

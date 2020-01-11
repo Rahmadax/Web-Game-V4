@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	inv "github.com/Rahmadax/Web-Game-V4/pkg/inventory"
-	"github.com/Rahmadax/Web-Game-V4/pkg/player_data"
+	player "github.com/Rahmadax/Web-Game-V4/pkg/player_data"
 	"github.com/gorilla/websocket"
 	"log"
 	"net/http"
@@ -54,10 +54,9 @@ func setupRoutes() {
 
 func main() {
 
-	ollie := &player_data.Character{}
-	ollie.New(1, "ollie")
-	fmt.Println(*ollie)
-
+	ollie := player.InitPlayer("Ollie")
+	ollie.NewCharacter("Ollie The Barbarian", "Human", "Warrior")
+	fmt.Println(ollie)
 
 	//inv := createInventory()
 	//fmt.Println(inv.ItemSlots)
