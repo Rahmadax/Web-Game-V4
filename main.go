@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	inv "github.com/Rahmadax/Web-Game-V4/pkg/inventory"
+	inv "github.com/Rahmadax/Web-Game-V4/pkg/gameplay/inventory"
 	"github.com/gorilla/websocket"
 	"log"
 	"net/http"
@@ -52,43 +52,10 @@ func setupRoutes() {
 }
 
 func main() {
-	//ollie := &pkg.Player{}
-	//chris := &pkg.Player{}
-	//
-	//ollie.New(0, "Ollie", "Human", 5, 5, 5)
-	//chris.New(1, "Chris", "Dwarf", 10, 0, 5)
-	//
-	//playerList := []pkg.Player{*ollie, *chris}
-	//
-	//session := game.NewGame(playerList, "standard")
-	//
-	//for i := range session.Players {
-	//	fmt.Println(session.Players[i])
-	//}
 
-	inv := createInventory()
+}
 
-	fmt.Println(inv.Currencies.Gold)
-
-	ok, num, _ := inv.BuyItem("1", 120)
-	if ok {
-		fmt.Println(inv.Currencies.Gold)
-		fmt.Println("Num: ", num)
-	}
-	fmt.Println(inv.ItemSlots)
-	fmt.Println(inv.Currencies.Gold)
-
-	inv.SellItem("1", 1, 5)
-	fmt.Println(inv.ItemSlots)
-	fmt.Println(inv.Currencies.Gold)
-
-	inv.SellItem("1", 1, 6)
-	fmt.Println(inv.ItemSlots)
-	fmt.Println(inv.Currencies.Gold)
-
-	inv.SellItem("1", 1, 1)
-	fmt.Println(inv.ItemSlots)
-	fmt.Println(inv.Currencies.Gold)
+func runTest() {
 
 }
 

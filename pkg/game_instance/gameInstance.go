@@ -1,15 +1,17 @@
 package game_instance
 
 import (
-	"github.com/Rahmadax/Web-Game-V4/pkg/player_data"
+	"github.com/Rahmadax/Web-Game-V4/pkg/gameplay/characters/player_characters"
+	"github.com/Rahmadax/Web-Game-V4/pkg/gameplay/scene"
 )
 
 type GameInstance struct {
-	Players []player_data.Player
+	Players  []player.Player
+	scenes []scene.s
 	GameMode string
 }
 
-func NewGame(players []player_data.Player, gameMode string) GameInstance {
+func NewGame(players []player.Player, gameMode string) GameInstance {
 	gameInstance := GameInstance{
 		Players:  players,
 		GameMode: gameMode,
@@ -17,6 +19,6 @@ func NewGame(players []player_data.Player, gameMode string) GameInstance {
 	return gameInstance
 }
 
-func (gameInstance *GameInstance) AddPlayers(players []player_data.Player) {
+func (gameInstance *GameInstance) AddPlayers(players []player.Player) {
 	gameInstance.Players = players
 }

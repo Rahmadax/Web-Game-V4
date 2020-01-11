@@ -1,6 +1,8 @@
 package inventory
 
-import "math"
+import (
+	"math"
+)
 
 type Currencies struct {
 	Gold int
@@ -9,7 +11,7 @@ type Currencies struct {
 func (inventory *Inventory) SellItem(itemId string, position int, amount int) (bool, int, error) {
 	numRemoved, ok := inventory.removeItem(itemId, position, amount)
 	if ok {
-		item, err := getItem(itemId)
+		item, err := GetItem(itemId)
 		if err != nil {
 			return false, 0, err
 		}
@@ -21,7 +23,7 @@ func (inventory *Inventory) SellItem(itemId string, position int, amount int) (b
 }
 
 func (inventory *Inventory) BuyItem(itemId string, amount int) (bool, int, error) {
-	item, err := getItem(itemId)
+	item, err := GetItem(itemId)
 	if err != nil {
 		return false, 0, err
 	}

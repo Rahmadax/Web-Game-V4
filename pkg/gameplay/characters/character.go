@@ -1,6 +1,6 @@
-package player
+package characters
 
-import "github.com/Rahmadax/Web-Game-V4/pkg/inventory"
+import inventory "github.com/Rahmadax/Web-Game-V4/pkg/gameplay/inventory"
 
 type Character struct {
 	Id        int
@@ -29,10 +29,4 @@ func generateBasicInventory() inventory.Inventory {
 	}
 }
 
-func (character Character) ChangeHp(change int) {
-	character.Hp += change
-}
 
-func (character Character) ChangeMp(change int) {
-	character.Mp += change
-}

@@ -1,0 +1,33 @@
+{
+  "0": {
+    "name": "Cave Wall",
+    "type": "",
+    "cost": -1,
+    "sprite": "",
+    "action": ""
+  },
+
+  "1": {
+    "name": "Dirt",
+    "type": "",
+    "cost": 1,
+    "sprite": "",
+    "action": ""
+  },
+
+  "2": {
+    "name": "Grass",
+    "type": "",
+    "cost": 1,
+    "sprite": "",
+    "action": ""
+  },
+
+  "3": {
+    "name": "Vines",
+    "type": "",
+    "cost": 2,
+    "sprite": "",
+    "action": ""
+  }
+}
